@@ -8,7 +8,12 @@ int main(int argc, char* argv[]) {
 
     int degat = personnage_attaquer();
 
+    int degat2 = personnage_attaquer();
+
     printf("\ndégat à subir %d\n", degat);
+
+    // on voit bien 
+    printf("\ndégat à subir %d\n", degat2);
 
     recevoir_degat(degat);
 

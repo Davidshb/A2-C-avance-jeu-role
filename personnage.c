@@ -10,6 +10,7 @@ static int nb_potion = -1;
 static int chance();
 
 void personnage_new(int _force) {
+    srand(time(NULL));
     vie = 100;
     force = _force;
     nb_potion = 10;
@@ -52,10 +53,5 @@ void recevoir_degat(int degat) {
 
 
 static int chance() {
-    static int first = 0;
-    if( first == 0) {
-        srand(time(NULL));
-        first = 1;
-    }
     return rand() % 4 + 1;
 }
