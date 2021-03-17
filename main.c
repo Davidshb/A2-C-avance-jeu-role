@@ -1,21 +1,36 @@
-#include "personnage.h"
 #include <stdio.h>
+#include "personnage.h"
+#include "partie.h"
 
-void main() {
-    Personnage* pers1 = Personnage_new(), *pers2 = Personnage_new();
+void choix_joueur(int j)
+{
+    int action_joueur;
+    printf("à votre tour joueur %d\n", j);
+    printf("1 -> attaquer joueur%d\n2 -> boire potion\n choix : ", j % 2 + 1);
+    scanf("%d", &action_joueur);
+    if (action_joueur == 1)
+        attaquer();
+    else if (action_joueur == 2)
+        boire_potion();
+}
 
-    Personnage_voir_etat(pers1);
-
-    int degat = Personnage_attaquer(pers1);
-
-    Personnage_recevoir_degat(pers2, degat);
-
-    Personnage_voir_etat(pers2);
-
-    Personnage_boire_potion(pers2);
-
-    Personnage_voir_etat(pers2);
-
-    Personnage_free(pers1);
-    Personnage_free(pers2);
+void main()
+{
+    while (1)
+    {
+        switch (getEtat())
+        {
+        case FIN_S:
+            printf("appuyer sur entrer pour démarrer la partie");
+            getchar();
+            lancer_partie();
+            break;
+        case JOUEUR_1_S:
+            choix_joueur(1);
+            break;
+        case JOUEUR_2_S:
+            choix_joueur(2);
+            break;
+        }
+    }
 }

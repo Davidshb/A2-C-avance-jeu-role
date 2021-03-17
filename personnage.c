@@ -72,10 +72,11 @@ void Personnage_recevoir_degat(Personnage* this, int degat)
 static int chance()
 {
     static int force = 0;
-    if (force == 1)
+    if (force == 0)
     {
         srand(time(NULL));
         force = 1;
     }
+
     return rand() % 4 + 1;
 }
