@@ -2,56 +2,80 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-static int vie = -1;
-static int force = -1;
-static int nb_potion = -1;
+#include <math.h>
 
 static int chance();
 
-void personnage_new(int _force) {
-    srand(time(NULL));
-    vie = 100;
-    force = _force;
-    nb_potion = 10;
+struct Personnage_t
+{
+    int vie;
+    int force;
+    int nb_potion;
+};
+
+Personnage *Personnage_new()
+{
+    Personnage *res = malloc(sizeof(Personnage));
+
+    res->force = FORCE;
+    res->vie = VIE_MAX;
+    res->nb_potion = NB_POTIONS;
+
+    return res;
 }
 
-void personnage_free() {
-    int vie = -1;
-    int force = -1;
-    int nb_potion = -1;
+void Personnage_free(Personnage *this)
+{
+    free(this);
 }
 
-int personnage_est_vivant() {
-    return vie > 0;
+int Personnage_est_vivant(Personnage *this)
+{
+    return this->vie > 0;
 }
 
-int personnage_attaquer() {
-    return force + chance();
+int Personnage_attaquer(Personnage *this)
+{
+    return this->force + chance();
 }
 
-int personnage_boire_potion() {
-    nb_potion--;
-    if(chance() == 1) {
+int Personnage_boire_potion(Personnage *this)
+{
+    this->nb_potion--;
+    if (chance() == 1)
+    {
         printf("la potion s'est cassée");
         return 0;
     }
-    vie += 10;
+    int res = this->vie + PV_POTION;
+
+    if(res < VIE_MAX)
+        this->vie = res;
+    else
+        this->vie = VIE_MAX;
     return 1;
 }
 
-void edit_etat() {
+void Personnage_voir_etat(Personnage* this)
+{
     printf("\n\n%%%%%%%%%%%%\n");
-    printf("Vie : %d\n", vie);
-    printf("Force: %d\n", force);
-    printf("Potion: %d\n", nb_potion);
+    printf("Vie : %d\n", this->vie);
+    printf("Force: %d\n", this->force);
+    printf("Potion: %d\n", this->nb_potion);
 }
 
-void recevoir_degat(int degat) {
-    vie -= degat;
+void Personnage_recevoir_degat(Personnage* this, int degat)
+{
+    this->vie -= degat;
 }
 
-
-static int chance() {
+static int chance()
+{
+    static int force = 0;
+    if (force == 1)
+    {
+        srand(time(NULL));
+        force = 1;
+    }
     return rand() % 4 + 1;
 }

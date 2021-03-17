@@ -1,16 +1,27 @@
 #ifndef _PERSONNAGE_H
 #define _PERSONNAGE_H
 
-void personnage_new(int);
-void personnage_free();
+#define PV_POTION 25
+#define FORCE 7
+#define VIE_MAX 100
+#define NB_POTIONS 5
 
-int personnage_est_vivant();
+typedef struct Personnage_t Personnage;
 
-int personnage_attaquer();
+Personnage *Personnage_new();
 
-int personnage_boire_potion();
+void Personnage_free(Personnage *this);
 
-void edit_etat();
+int Personnage_attaquer(Personnage *this);
 
-void recevoir_degat(int);
+void Personnage_recevoir_degat(Personnage *this, int degat);
+
+int Personnage_boire_potion(Personnage *this);
+
+int Personnage_attaquer(Personnage *this);
+
+void Personnage_voir_etat(Personnage *this);
+
+int Personnage_est_vivant(Personnage *this);
+
 #endif

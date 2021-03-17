@@ -1,24 +1,21 @@
 #include "personnage.h"
 #include <stdio.h>
 
-int main(int argc, char* argv[]) {
-    personnage_new(5);
+void main() {
+    Personnage* pers1 = Personnage_new(), *pers2 = Personnage_new();
 
-    edit_etat();
+    Personnage_voir_etat(pers1);
 
-    int degat = personnage_attaquer();
+    int degat = Personnage_attaquer(pers1);
 
-    int degat2 = personnage_attaquer();
+    Personnage_recevoir_degat(pers2, degat);
 
-    printf("\ndégat à subir %d\n", degat);
+    Personnage_voir_etat(pers2);
 
-    // on voit bien 
-    printf("\ndégat à subir %d\n", degat2);
+    Personnage_boire_potion(pers2);
 
-    recevoir_degat(degat);
+    Personnage_voir_etat(pers2);
 
-    edit_etat();
-
-    personnage_free();
-    return 0;
+    Personnage_free(pers1);
+    Personnage_free(pers2);
 }
