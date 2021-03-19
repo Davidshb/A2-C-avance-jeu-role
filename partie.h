@@ -2,12 +2,16 @@
 #define _PARTIE_H
 
 #include "personnage.h"
+#include <stdbool.h>
+
+static bool continue_partie = true;
 
 typedef enum
 {
-    JOUEUR_1_S,
-    JOUEUR_2_S,
+    TOUR_J1_S,
+    TOUR_J2_S,
     FIN_S,
+    INIT_S,
     NB_ETAT
 } Etat;
 
@@ -15,19 +19,19 @@ typedef enum
 {
     NOP_A=0,
     DEMARRE_A,
-    ATTAQUE_J1_A,
-    ATTAQUE_J2_A,
-    BOIRE_POPO_J1_A,
-    BOIRE_POPO_J2_A,
+    TOUR_J1_A,
+    TOUR_J2_A,
+    ARRET_A,
     FIN_A
 } TransitionAction;
 
 typedef enum
 {
-    ATTAQUER_E = 0,
-    BOIRE_POPO_E,
-    PV_0_E,
+    ACTION_E = 0,
+    FIN_E,
     DEMARRER_E,
+    START_E,
+    ARRET_E,
     NB_ENTREE
 } Entree;
 
@@ -38,20 +42,15 @@ typedef struct
 } Transition;
 
 static Transition mySm[NB_ETAT][NB_ENTREE] = {
-    [JOUEUR_1_S][ATTAQUER_E] = {JOUEUR_2_S, ATTAQUE_J1_A},
-    [JOUEUR_1_S][BOIRE_POPO_E] = {JOUEUR_2_S, BOIRE_POPO_J1_A},
-    [JOUEUR_1_S][PV_0_E] = {FIN_S, FIN_A},
-    [JOUEUR_2_S][ATTAQUER_E] = {JOUEUR_1_S, ATTAQUE_J2_A},
-    [JOUEUR_2_S][BOIRE_POPO_E] = {JOUEUR_1_S, BOIRE_POPO_J2_A},
-    [JOUEUR_2_S][PV_0_E] = {FIN_S, FIN_A},
-    [FIN_S][DEMARRER_E] = {JOUEUR_1_S, DEMARRE_A}
+    [TOUR_J1_S][ACTION_E] = {TOUR_J2_S, TOUR_J2_A},
+    [TOUR_J1_S][FIN_E] = {FIN_S, FIN_A},
+    [TOUR_J2_S][ACTION_E] = {TOUR_J1_S, TOUR_J1_A},
+    [TOUR_J2_S][FIN_E] = {FIN_S, FIN_A},
+    [FIN_S][DEMARRER_E] = {INIT_S, DEMARRE_A},
+    [INIT_S][START_E] = {TOUR_J1_S, TOUR_J1_A},
+    [FIN_S][ARRET_E] = {FIN_S, ARRET_A}
 };
 
-void attaquer();
-void boire_potion();
-void lancer_partie();
-void afficher_mae();
-
-Etat getEtat();
+void action_suivante();
 
 #endif

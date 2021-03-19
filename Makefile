@@ -6,7 +6,7 @@ run:
 exec: main.o personnage.o partie.o
 	gcc *.o -o exec
 
-main.o: main.c personnage.h partie.h
+main.o: main.c partie.h
 	gcc -c main.c
 
 personnage.o: personnage.c personnage.h
